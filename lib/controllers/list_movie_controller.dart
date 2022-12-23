@@ -13,10 +13,10 @@ class MovieController extends GetxController {
   var listBackdrop = <Backdrop>[].obs;
   var listPosters = <Posters>[].obs;
   var isLoading = true.obs;
-  var isLoadingDetail = true.obs;
+  var isLoadingDetail = false.obs;
   var isLoadGall = true.obs;
 
-  var filter = [];
+  var filter = [].obs;
   var query = ''.obs;
   var isCari = false.obs;
   TextEditingController cari = TextEditingController();
@@ -75,6 +75,7 @@ class MovieController extends GetxController {
 
   void getDetailMovie(int id) async {
     // movieDetail.value.refresh();
+    isLoadingDetail.value = true;
     String url = baseUrl + '$id?api_key=8e1de2dc50ba06f92a4de60408dad66a';
     final response = await http.get(Uri.parse(url));
     var data = convert.jsonDecode(response.body);
@@ -111,7 +112,7 @@ class MovieController extends GetxController {
     // );
     // movieDetail.clear();
     // movieDetail.refresh();
-    // isLoading.value = false;
+    isLoading.value = false;
   }
 
   void getGallery(String id) async {
@@ -141,7 +142,7 @@ class MovieController extends GetxController {
   void searchMovie() async {
     // final result = listMovie.mapMany((e) => e.title.wh)
 
-    filter = [];
+    filter = [].obs;
     for (int i = 0; i < listMovie.length; i++){
       var item = listMovie[i];
       if (item.title.toLowerCase().contains(query.toLowerCase())){
