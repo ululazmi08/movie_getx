@@ -12,7 +12,7 @@ class MovieController extends GetxController {
   var movieDetail = MovieDetail().obs;
   var listBackdrop = <Backdrop>[].obs;
   var listPosters = <Posters>[].obs;
-  var isLoading = true.obs;
+  var isLoading = false.obs;
   var isLoadingDetail = false.obs;
   var isLoadGall = true.obs;
 
@@ -21,24 +21,10 @@ class MovieController extends GetxController {
   var isCari = false.obs;
   TextEditingController cari = TextEditingController();
 
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    getMovie();
-    cari.addListener((){
-      if(cari.text.isEmpty){
-        isCari.value = false;
-        query.value = '';
-      } else {
-        isCari.value = true;
-        query.value = cari.text;
-        searchMovie();
-      }
-    });
-  }
-
-  // MovieController() {
+  // @override
+  // void onInit() {
+  //   // TODO: implement onInit
+  //   super.onInit();
   //   getMovie();
   //   cari.addListener((){
   //     if(cari.text.isEmpty){
@@ -52,11 +38,27 @@ class MovieController extends GetxController {
   //   });
   // }
 
+  MovieController() {
+    getMovie();
+    cari.addListener((){
+      if(cari.text.isEmpty){
+        isCari.value = false;
+        query.value = '';
+      } else {
+        isCari.value = true;
+        query.value = cari.text;
+        searchMovie();
+      }
+    });
+  }
+
   String baseUrl = "https://api.themoviedb.org/3/movie/";
   String imageUrl = 'https://image.tmdb.org/t/p/w500';
 
   void getMovie() async {
     listMovie.clear();
+    isLoading.value = true;
+
     String url =
         baseUrl + 'now_playing?api_key=8e1de2dc50ba06f92a4de60408dad66a';
     final response = await http.get(Uri.parse(url));
