@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:movie_getx/controllers/list_movie_controller.dart';
 
-class GalleryDetailPage extends StatefulWidget {
-  const GalleryDetailPage({Key? key}) : super(key: key);
+class GalleryDetailPage extends StatelessWidget {
+  var data;
+  GalleryDetailPage(this.data);
 
-  @override
-  _GalleryDetailPageState createState() => _GalleryDetailPageState();
-}
-
-class _GalleryDetailPageState extends State<GalleryDetailPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black,
+    final movieC = Get.find<MovieController>();
+    return GestureDetector(
+      onTap: () {
+        Get.back();
+      },
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Image.network('${movieC.imageUrl + data}'),
+      ),
     );
   }
 }

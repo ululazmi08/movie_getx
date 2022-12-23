@@ -131,7 +131,7 @@ class BelongsToCollection {
   int id;
   String name;
   String? posterPath;
-  String backdropPath;
+  String? backdropPath;
 
   factory BelongsToCollection.fromJson(Map<String, dynamic> json) => BelongsToCollection(
     id: json["id"] == null ? null : json["id"],

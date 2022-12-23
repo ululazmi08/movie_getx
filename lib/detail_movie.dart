@@ -6,10 +6,10 @@ import 'package:movie_getx/model/model_movie.dart';
 import 'package:movie_getx/model/model_movie_detail.dart';
 
 class DetailMoviePage extends StatelessWidget {
-  int data;
-  DetailMoviePage(this.data);
-  // final movieC = Get.find<MovieController>();
+  // int data;
+  // DetailMoviePage(this.data);
 
+  final movieC = Get.find<MovieController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,16 +18,11 @@ class DetailMoviePage extends StatelessWidget {
         preferredSize: Size.fromHeight(0.0),
         child: AppBar(),
       ),
-      body: GetBuilder<MovieController>(
-          init: MovieController(),
-          // initState: (controller) => controller.getDetailMovie,
-          builder: (controller) {
-            if (controller.movieDetail.id == null){
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return SingleChildScrollView(
+      body: Obx(() => movieC.isLoadingDetail.value
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
               child: Column(
                 children: [
                   Stack(
@@ -40,7 +35,7 @@ class DetailMoviePage extends StatelessWidget {
                             color: Colors.grey,
                             image: DecorationImage(
                                 image: NetworkImage(
-                                    '${controller.imageUrl}${controller.movieDetail.posterPath}'),
+                                    '${movieC.imageUrl}${movieC.movieDetail.value.posterPath}'),
                                 fit: BoxFit.cover)),
                         height: 1000,
                         // child: Image.network('${movieC.imageUrl}${movieC.movieDetail.posterPath}',),
@@ -60,7 +55,7 @@ class DetailMoviePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${controller.movieDetail.title}',
+                                '${movieC.movieDetail.value.title}',
                                 // maxLines: 2,
                                 style: TextStyle(fontSize: 20),
                               ),
@@ -77,7 +72,7 @@ class DetailMoviePage extends StatelessWidget {
                                     width: 15,
                                   ),
                                   Text(
-                                    '${controller.movieDetail.releaseDate?.year}',
+                                    '${movieC.movieDetail.value.releaseDate?.year}',
                                     style: TextStyle(
                                       fontSize: 15,
                                       color: Colors.black.withOpacity(0.4),
@@ -99,7 +94,7 @@ class DetailMoviePage extends StatelessWidget {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      '${controller.movieDetail.homepage}',
+                                      '${movieC.movieDetail.value.homepage}',
                                       style: TextStyle(
                                         fontSize: 15,
                                         color: Colors.black.withOpacity(0.4),
@@ -122,7 +117,7 @@ class DetailMoviePage extends StatelessWidget {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      '${controller.movieDetail.overview}',
+                                      '${movieC.movieDetail.value.overview}',
                                       style: TextStyle(
                                         fontSize: 15,
                                         color: Colors.black.withOpacity(0.4),
@@ -138,7 +133,7 @@ class DetailMoviePage extends StatelessWidget {
                               ),
                               SizedBox(height: 5),
                               Text(
-                                '${controller.movieDetail.tagline}',
+                                '${movieC.movieDetail.value.tagline}',
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.black.withOpacity(0.8),
@@ -160,14 +155,14 @@ class DetailMoviePage extends StatelessWidget {
                                   // scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
                                   itemCount:
-                                  controller.movieDetail.genres?.length,
+                                      movieC.movieDetail.value.genres?.length,
                                   itemBuilder: (context, index) {
                                     return Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                            '- ${controller.movieDetail.genres?[index].name}'),
+                                            '- ${movieC.movieDetail.value.genres?[index].name}'),
                                         SizedBox(height: 5)
                                       ],
                                     );
@@ -180,16 +175,22 @@ class DetailMoviePage extends StatelessWidget {
                       ),
                       Positioned(
                         top: 325,
-                        right: 30,
+                        right: 25,
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => GalleryPage()));
+                            var data = movieC.movieDetail.value;
+                            movieC.getGallery(data.id.toString());
+                            Get.to(GalleryPage(), binding: BindingsBuilder(() {
+                              Get.put(MovieController());
+                            }));
                           },
                           child: CircleAvatar(
-                            child: Text('Hai'),
+                            backgroundColor: Colors.lightGreen,
+                            radius: 25,
+                            child: Icon(
+                              Icons.photo_library_outlined,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -210,8 +211,7 @@ class DetailMoviePage extends StatelessWidget {
                   ),
                 ],
               ),
-            );
-          }),
+            )),
     );
   }
 }

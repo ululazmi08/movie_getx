@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:movie_getx/controllers/list_movie_controller.dart';
 import 'package:movie_getx/detail_movie_gallery/gallery_backdrops.dart';
 import 'package:movie_getx/detail_movie_gallery/gallery_poster.dart';
 
 class GalleryPage extends StatefulWidget {
-  const GalleryPage({Key? key}) : super(key: key);
 
   @override
   _GalleryPageState createState() => _GalleryPageState();
@@ -24,6 +25,8 @@ class _GalleryPageState extends State<GalleryPage>
     tabcontrol?.dispose();
     super.dispose();
   }
+
+  final movieC = Get.find<MovieController>();
 
   @override
   Widget build(BuildContext context) {

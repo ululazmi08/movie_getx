@@ -10,12 +10,12 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // final movieC = Get.put(MovieController());
+  final movieC = Get.put(MovieController());
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialBinding: ControllerBindings(),
+      // initialBinding: ControllerBindings(),
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
