@@ -6,6 +6,7 @@ import 'package:movie_getx/detail_movie.dart';
 import 'package:movie_getx/home.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
